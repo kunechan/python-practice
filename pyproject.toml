@@ -1,0 +1,20 @@
+[project]
+name = "python-practice"
+description = "pythonによる開発練習"
+authors = [
+    { name = "Kazuma Saito" },
+]
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "polars>=1.33.1",
+]
+
+[dependency-groups]
+dev = [
+    "mlflow>=2.22.0",
+    "mypy>=1.15.0",
+    "pytest>=8.3.5",
+    "ruff>=0.11.9",
+]
