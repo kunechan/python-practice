@@ -1,29 +1,40 @@
 {
-    "name": "python-practice",
-    // Python 3.12 がプリインストールされたイメージをそのまま使います
-    "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
-
+    "name": "impact-eval-bootcamp",
+    // astral-shのuvを含むPython 3.13のイメージを使用
+    "image": "ghcr.io/astral-sh/uv:python3.13-trixie",
     "features": {
-        // uv をインストールするためのFeatureを追加します
-        "ghcr.io/jsburckhardt/devcontainer-features/uv:1": {}
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installSudo": true,
+            "username": "vscode",
+            "userUid": "automatic",
+            "userGid": "automatic"
+        }
     },
-    
     "customizations": {
         "vscode": {
             "extensions": [
                 "ms-python.python",
                 "ms-python.vscode-pylance",
-                "ms-toolsai.jupyter"
+                "ms-toolsai.jupyter",
+                "charliermarsh.ruff",
+                "eamodio.gitlens",
+                "streetsidesoftware.code-spell-checker"
             ],
             "settings": {
-                // ベースイメージのPythonパスを指定します
-                "python.defaultInterpreterPath": "/usr/local/bin/python",
-                "editor.formatOnSave": true
+                "python.defaultInterpreterPath": ".venv/bin/python",
+                "[python]": {
+                    "editor.defaultFormatter": "charliermarsh.ruff",
+                    "editor.formatOnSave": true
+                },
+                "editor.codeActionsOnSave": {
+                    "source.fixAll.ruff": "explicit"
+                },
+                "files.insertFinalNewline": true,
+                "files.trimTrailingWhitespace": true
             }
         }
     },
-
-    // uvで仮想環境を作成し、ライブラリをインストールします
-    "postCreateCommand": "sudo chown -R vscode:vscode . && uv venv && uv sync --dev",
+    // uvで仮想環境を作成し、ライブラリをインストール後、pre-commitをセットアップします
+    "postCreateCommand": "sudo chown -R vscode:vscode . && uv venv && uv sync --dev && pre-commit install",
     "remoteUser": "vscode"
 }
