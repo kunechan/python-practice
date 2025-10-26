@@ -4,12 +4,13 @@
     "image": "ghcr.io/astral-sh/uv:python3.13-trixie",
     "features": {
         "ghcr.io/devcontainers/features/common-utils:2": {
-            "installSudo": true,
-            "username": "vscode",
-            "userUid": "automatic",
-            "userGid": "automatic"
+            "username": "vscode"
         }
     },
+    // ホストの.gitconfigをコンテナ内のvscodeユーザーのホームにマウント
+    "mounts": [
+        "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
+    ],
     "customizations": {
         "vscode": {
             "extensions": [
@@ -34,7 +35,6 @@
             }
         }
     },
-    // uvで仮想環境を作成し、ライブラリをインストール後、pre-commitをセットアップします
     "postCreateCommand": "sudo chown -R vscode:vscode . && uv venv && uv sync --dev && pre-commit install",
     "remoteUser": "vscode"
 }
